@@ -6,8 +6,10 @@ After=network.target
 Type=simple
 Restart=always
 RestartSec=5
-ExecStart=@CMAKE_INSTALL_PREFIX@/bin/@PROJECT_NAME@ -S1
+ExecStart=@CMAKE_INSTALL_PREFIX@/bin/@PROJECT_NAME@ -u media/stream2 -P 554 /dev/video2
 WorkingDirectory=@CMAKE_INSTALL_PREFIX@/share/@PROJECT_NAME@
+StandardOutput=file:/var/log/v4l2rtspserver1.log
+StandardError=file:/var/log/v4l2rtspserver2.log
 
 [Install]
 WantedBy=multi-user.target
