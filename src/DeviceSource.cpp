@@ -89,7 +89,8 @@ void* V4L2DeviceSource::thread()
 	fd_set fdset;
 	FD_ZERO(&fdset);
 	timeval tv;
-	
+	uint32_t error_count = 0;
+
 	LOG(NOTICE) << "begin thread"; 
 	while (!stop) 
 	{
@@ -104,8 +105,12 @@ void* V4L2DeviceSource::thread()
 			{
 				if (this->getNextFrame() <= 0)
 				{
-					LOG(ERROR) << "error:" << strerror(errno); 						
-					stop=1;
+					LOG(ERROR) << "error:" << strerror(errno);
+					if (++error_count > 20) {
+						exit(EXIT_FAILURE);
+					} else {
+						usleep(1000);
+					}
 				}
 			}
 		}
